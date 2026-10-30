@@ -88,6 +88,21 @@ body {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--bg-blue-light);
+  overflow: hidden;
+}
+
+.brand-logo-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+}
+
+.modal-logo-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-text {
@@ -777,6 +792,11 @@ body {
     width: 30px;
     height: 30px;
     flex: 0 0 auto;
+  }
+
+  .brand-logo-img {
+    width: 20px;
+    height: 20px;
   }
 
   .brand-title {
