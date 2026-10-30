@@ -315,6 +315,20 @@ body {
   color: var(--text-muted);
 }
 
+.counter-text {
+  transition: color 0.2s ease, font-weight 0.2s ease;
+}
+
+.counter-text.counter-warning {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.counter-text.counter-danger {
+  color: #dc2626;
+  font-weight: 700;
+}
+
 .counter-divider {
   color: var(--border-subtle);
 }

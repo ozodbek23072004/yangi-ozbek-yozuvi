@@ -14,17 +14,35 @@ if (!Converter) {
   throw new Error("converter.js yuklanmadi. index.html dagi script tartibini tekshiring.");
 }
 
-// Namuna matn (1995-yilgi yozuvda)
-const SAMPLE_TEXT_1995 = `O'zbekiston Respublikasi — boy tarix va buyuk kelajakka ega bo'lgan mustaqil davlat.
-Shahar va qishloqlarda ulkan o'zgarishlar, yangi bino hamda inshootlar qad ko'tarmoqda.
-Charchash bilmas yoshlarimiz xalqaro olimpiadalarda g'alabalarga erishmoqda.
-San'at va madaniyat sohasida ham yuksak yutuqlarga erishilmoqda.
-Quyosh nurlari ostida yashnab turgan go'zal yurtimiz — bizning g'ururimiz!`;
+// Namuna matn: O'zbekiston Respublikasining O'RQ-1184-sonli Qonuni (lex.uz)
+const SAMPLE_TEXT_1995 = `OʻZBEKISTON RESPUBLIKASINING QONUNI
+“Lotin yozuviga asoslangan oʻzbek alifbosini joriy etish toʻgʻrisida”gi Oʻzbekiston Respublikasi Qonuniga oʻzgartirish kiritish haqida
 
-const SAMPLE_TEXT_2026 = `Özbek tili — chiroyli va boy til.
-Şahar köçalari gullagan daraxtlar bilan bezangan.
-Milliy taomlardan çoy içib, bayram kayfiyatida yurmoqda.
-Özbek şeʼriyati ğoyat nozik va şirindir.`;
+Keyingi yillarda oʻzbek tilini rivojlantirish, uning davlat tili sifatidagi nufuzini mustahkamlash borasida tizimli choralar koʻrilmoqda. Oʻzbek tili mamlakatimiz ijtimoiy hayotining barcha sohalarida faol qoʻllanilmoqda, shuningdek uning xalqaro maydondagi nufuzi tobora ortib bormoqda. Xorijiy mamlakatlarda oʻzbek tiliga alohida eʼtibor qaratilib, uni oʻrganishga boʻlgan qiziqish kuchaymoqda.
+
+Mana shunday sharoitda lotin yozuviga asoslangan oʻzbek alifbosini va imlo qoidalarini soha mutaxassislari tomonidan olib borilgan ilmiy-tadqiqot ishlari asosida takomillashtirish zaruriyati yuzaga kelmoqda.
+
+Mazkur Qonun bilan “Lotin yozuviga asoslangan oʻzbek alifbosini joriy etish toʻgʻrisida”gi Oʻzbekiston Respublikasi Qonuniga lotin yozuviga asoslangan oʻzbek alifbosi 26 ta harf va 3 ta harflar birikmasi oʻrniga 28 ta harf va 1 ta tutuq belgisidan tashkil topishini nazarda tutuvchi oʻzgartirish kiritilmoqda.
+
+Ushbu Qonun lotin yozuviga asoslangan oʻzbek alifbosini va imlo qoidalarini yanada takomillashtirishga hamda davlat tilini qoʻllash va raqamlashtirish imkoniyatlarini yanada kengaytirishga xizmat qiladi.`;
+
+const SAMPLE_TEXT_2026 = `ÖZBEKISTON RESPUBLIKASINING QONUNI
+“Lotin yozuviga asoslangan özbek alifbosini joriy etiş töğrisida”gi Özbekiston Respublikasi Qonuniga özgartiriş kiritiş haqida
+
+Keyingi yillarda özbek tilini rivojlantiriş, uning davlat tili sifatidagi nufuzini mustahkamlaş borasida tizimli çoralar körilmoqda. Özbek tili mamlakatimiz ijtimoiy hayotining barça sohalarida faol qöllanilmoqda, şuningdek uning xalqaro maydondagi nufuzi tobora ortib bormoqda. Xorijiy mamlakatlarda özbek tiliga alohida eʼtibor qaratilib, uni örganişga bölgan qiziqiş kuçaymoqda.
+
+Mana şunday şaroitda lotin yozuviga asoslangan özbek alifbosini va imlo qoidalarini soha mutaxassislari tomonidan olib borilgan ilmiy-tadqiqot işlari asosida takomillaştiriş zaruriyati yuzaga kelmoqda.
+
+Mazkur Qonun bilan “Lotin yozuviga asoslangan özbek alifbosini joriy etiş töğrisida”gi Özbekiston Respublikasi Qonuniga lotin yozuviga asoslangan özbek alifbosi 26 ta harf va 3 ta harflar birikmasi örniga 28 ta harf va 1 ta tutuq belgisidan taşkil topişini nazarda tutuvçi özgartiriş kiritilmoqda.
+
+Uşbu Qonun lotin yozuviga asoslangan özbek alifbosini va imlo qoidalarini yanada takomillaştirişga hamda davlat tilini qöllaş va raqamlaştiriş imkoniyatlarini yanada kengaytirişga xizmat qiladi.`;
+
+// Maksimal belgi sig'imi
+const MAX_CHARS = 20000;
+
+function formatNumber(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+}
 
 // =========================================================================
 // 1. UI holati va DOM elementlari
@@ -85,6 +103,10 @@ const COPY_BTN_SUCCESS_HTML = `
 
 /** Matnni konvertatsiya qiladi va natijani yangilaydi */
 function runConversion() {
+  if (sourceText.value.length > MAX_CHARS) {
+    sourceText.value = sourceText.value.slice(0, MAX_CHARS);
+    showStatus(`Maksimal hajm — ${formatNumber(MAX_CHARS)} belgi! Ortiqcha qismi qisqartirildi.`, true);
+  }
   const input = sourceText.value;
   const result = Converter.convert(input, direction);
   targetText.value = result;
@@ -113,14 +135,24 @@ function cancelScheduledConversion() {
 function updateCounters(inputText, resultText) {
   const inChars = inputText.length;
   const inWords = inputText.trim() === '' ? 0 : inputText.trim().split(/\s+/).length;
-  charCounter.textContent = `${inChars} belgi`;
-  wordCounter.textContent = `${inWords} so'z`;
+  charCounter.textContent = `${formatNumber(inChars)} / ${formatNumber(MAX_CHARS)} belgi`;
+  wordCounter.textContent = `${formatNumber(inWords)} so'z`;
+
+  if (inChars >= MAX_CHARS) {
+    charCounter.classList.add('counter-danger');
+    charCounter.classList.remove('counter-warning');
+  } else if (inChars >= MAX_CHARS * 0.9) {
+    charCounter.classList.add('counter-warning');
+    charCounter.classList.remove('counter-danger');
+  } else {
+    charCounter.classList.remove('counter-warning', 'counter-danger');
+  }
 
   const outChars = resultText ? resultText.length : 0;
   const outWords = resultText && resultText.trim() !== '' ? resultText.trim().split(/\s+/).length : 0;
   if (targetCharCounter && targetWordCounter) {
-    targetCharCounter.textContent = `${outChars} belgi`;
-    targetWordCounter.textContent = `${outWords} so'z`;
+    targetCharCounter.textContent = `${formatNumber(outChars)} belgi`;
+    targetWordCounter.textContent = `${formatNumber(outWords)} so'z`;
   }
 }
 
@@ -174,7 +206,7 @@ function updateLabels() {
     inputCardTag.textContent = '1995';
     outputCardTitle.textContent = 'Yangi yozuvdagi natija';
     outputCardTag.textContent = '2026';
-    sourceText.placeholder = 'Matnni bu yerga kiriting yoki nusxasini joylashtiring...';
+    sourceText.placeholder = 'Matnni bu yerga kiriting yoki nusxasini joylashtiring (maks. 20 000 belgi)...';
     targetText.placeholder = 'Konvertatsiya qilingan natija shu yerda avtomatik paydo bo\'ladi...';
   } else {
     sourceLabel.textContent = 'Yangi tahrir (2026-yil)';
@@ -183,7 +215,7 @@ function updateLabels() {
     inputCardTag.textContent = '2026';
     outputCardTitle.textContent = 'Eski yozuvdagi natija';
     outputCardTag.textContent = '1995';
-    sourceText.placeholder = 'Yangi alifbodagi matnni bu yerga kiriting...';
+    sourceText.placeholder = 'Yangi alifbodagi matnni bu yerga kiriting (maks. 20 000 belgi)...';
     targetText.placeholder = 'Eski yozuvdagi natija shu yerda avtomatik paydo bo\'ladi...';
   }
 }
@@ -206,14 +238,26 @@ function buildTimestamp() {
 /** Jonli konvertatsiya: har bir kalit bosilganda ishlaydi */
 sourceText.addEventListener('input', scheduleConversion);
 
+/** Brauzerda Ctrl+V / Cmd+V orqali joylashtirilganda cheklovni tekshirish */
+sourceText.addEventListener('paste', () => {
+  window.setTimeout(() => {
+    if (sourceText.value.length >= MAX_CHARS) {
+      showStatus(`Maksimal hajm — ${formatNumber(MAX_CHARS)} belgi!`, true);
+    }
+  }, 0);
+});
+
 /** ⇄ Yo'nalishni almashtirish funksiyasi */
 function handleSwap() {
-  const currentResult = targetText.value;
+  let currentResult = targetText.value;
   cancelScheduledConversion();
   direction = direction === '1995_to_2026' ? '2026_to_1995' : '1995_to_2026';
   updateLabels();
   resetCopyBtn();
 
+  if (currentResult.length > MAX_CHARS) {
+    currentResult = currentResult.slice(0, MAX_CHARS);
+  }
   sourceText.value = currentResult;
   runConversion();
   focusSourceAtStart();
@@ -247,13 +291,22 @@ clearBtn.addEventListener('click', () => {
 pasteBtn.addEventListener('click', async () => {
   try {
     if (navigator.clipboard && navigator.clipboard.readText) {
-      const clipboardText = await navigator.clipboard.readText();
+      let clipboardText = await navigator.clipboard.readText();
       if (clipboardText) {
+        let isTruncated = false;
+        if (clipboardText.length > MAX_CHARS) {
+          clipboardText = clipboardText.slice(0, MAX_CHARS);
+          isTruncated = true;
+        }
         cancelScheduledConversion();
         sourceText.value = clipboardText;
         runConversion();
         focusSourceAtStart();
-        showStatus('Matn xotiradan joylashtirildi.');
+        if (isTruncated) {
+          showStatus(`Maksimal hajm — ${formatNumber(MAX_CHARS)} belgi! Ortiqcha qismi qisqartirildi.`, true);
+        } else {
+          showStatus('Matn xotiradan joylashtirildi.');
+        }
         return;
       }
     }
