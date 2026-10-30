@@ -49,8 +49,6 @@ const inputCardTag = document.getElementById('inputCardTag');
 const outputCardTitle = document.getElementById('outputCardTitle');
 const outputCardTag = document.getElementById('outputCardTag');
 const swapBtn = document.getElementById('swapBtn');
-const mobileSwapBtn = document.getElementById('mobileSwapBtn');
-const mobileSwapText = document.getElementById('mobileSwapText');
 const clearBtn = document.getElementById('clearBtn');
 const sampleBtn = document.getElementById('sampleBtn');
 const pasteBtn = document.getElementById('pasteBtn');
@@ -159,12 +157,19 @@ function resetCopyBtn() {
   copyBtn.classList.remove('btn-success');
 }
 
+/** Kursorni matn boshiga qo'yadi va maydonni tepaga suradi */
+function focusSourceAtStart() {
+  sourceText.focus();
+  sourceText.setSelectionRange(0, 0);
+  sourceText.scrollTop = 0;
+  sourceText.scrollLeft = 0;
+}
+
 /** Yo'nalish yorliqlarini yangilaydi */
 function updateLabels() {
   if (direction === '1995_to_2026') {
     sourceLabel.textContent = 'Lotin (1995-yil)';
     targetLabel.textContent = 'Yangi tahrir (2026-yil)';
-    if (mobileSwapText) mobileSwapText.textContent = '1995 ➔ 2026';
     inputCardTitle.textContent = 'Asl matn';
     inputCardTag.textContent = '1995';
     outputCardTitle.textContent = 'Yangi yozuvdagi natija';
@@ -174,7 +179,6 @@ function updateLabels() {
   } else {
     sourceLabel.textContent = 'Yangi tahrir (2026-yil)';
     targetLabel.textContent = 'Lotin (1995-yil)';
-    if (mobileSwapText) mobileSwapText.textContent = '2026 ➔ 1995';
     inputCardTitle.textContent = 'Asl matn';
     inputCardTag.textContent = '2026';
     outputCardTitle.textContent = 'Eski yozuvdagi natija';
@@ -212,13 +216,21 @@ function handleSwap() {
 
   sourceText.value = currentResult;
   runConversion();
-  sourceText.focus();
+  focusSourceAtStart();
+
+  swapBtn.classList.toggle('is-reversed');
+  swapBtn.classList.remove('is-swapping');
+  void swapBtn.offsetWidth; /* animatsiyani qayta boshlash uchun */
+  swapBtn.classList.add('is-swapping');
 }
 
 swapBtn.addEventListener('click', handleSwap);
-if (mobileSwapBtn) {
-  mobileSwapBtn.addEventListener('click', handleSwap);
-}
+
+swapBtn.addEventListener('animationend', (event) => {
+  if (event.animationName === 'swap-pulse') {
+    swapBtn.classList.remove('is-swapping');
+  }
+});
 
 /** ✕ Tozalash tugmasi */
 clearBtn.addEventListener('click', () => {
@@ -228,7 +240,7 @@ clearBtn.addEventListener('click', () => {
   updateCounters('', '');
   updateButtonStates();
   resetCopyBtn();
-  sourceText.focus();
+  focusSourceAtStart();
 });
 
 /** 📋 Joylashtirish (Paste) tugmasi */
@@ -240,7 +252,7 @@ pasteBtn.addEventListener('click', async () => {
         cancelScheduledConversion();
         sourceText.value = clipboardText;
         runConversion();
-        sourceText.focus();
+        focusSourceAtStart();
         showStatus('Matn xotiradan joylashtirildi.');
         return;
       }
@@ -259,7 +271,7 @@ sampleBtn.addEventListener('click', () => {
   sourceText.value = direction === '1995_to_2026' ? SAMPLE_TEXT_1995 : SAMPLE_TEXT_2026;
   runConversion();
   resetCopyBtn();
-  sourceText.focus();
+  focusSourceAtStart();
 });
 
 /** 📋 Nusxa olish tugmasi (xavfsiz va ishonchli) */

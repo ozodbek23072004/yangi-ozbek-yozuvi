@@ -9,6 +9,9 @@ o'giradigan yengil, server talab qilmaydigan veb-ilova.
 - `ch` ⇄ `ç`
 - tutuq belgisi `ʼ` (U+02BC) normallashtiriladi
 
+Manba: [O'RQ-1184-son Qonun (lex.uz)](https://lex.uz/uz/docs/8548754) —
+2026-yil 21-oktabr, kuchga kirish sanasi 2027-yil 22-aprel.
+
 ## Tuzilma
 
 ```

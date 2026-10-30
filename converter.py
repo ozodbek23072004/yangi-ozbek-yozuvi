@@ -3,7 +3,9 @@ Yangi O'zbek Alifbosi Konvertori (1995 -> 2026 va 2026 -> 1995).
 
 O'zbekiston Respublikasining 2026-yil 21-oktyabrdagi O'RQ-1184-sonli
 "Lotin yozuviga asoslangan o'zbek alifbosini joriy etish to'g'risida"gi
-Qonuniga asosan ishlab chiqilgan.
+Qonunga o'zgartirish kiritish haqidagi Qonuniga asosan ishlab chiqilgan.
+
+Manba: https://lex.uz/uz/docs/8548754 (kuchga kirish sanasi: 2027-yil 22-aprel).
 
 Bu modul `converter.js` bilan bir xil qoidalarni amalga oshiradi va
 `tests/cases.json` dagi umumiy testlar orqali tekshiriladi.
