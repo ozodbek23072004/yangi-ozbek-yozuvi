@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="uz-Latn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="O'zbek lotin yozuvini 1995 va 2026 tahrirlari orasida tez, xavfsiz va bepul o'giradigan onlayn konvertor.">
+  <title>Yangi O'zbek Yozuvi Konvertori (1995 ➔ 2026)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Bosh qism: Yagona birlashgan ixcham boshqaruv paneli -->
+  <header class="header">
+    <div class="header-container">
+      
+      <!-- Chap: Brand -->
+      <div class="brand">
+        <div class="brand-icon">
+          <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+            <path d="M8 7h8"/>
+            <path d="M8 11h8"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">Yangi O'zbek Yozuvi</h1>
+          <span class="brand-subtitle">Rasmiy konvertor</span>
+        </div>
+      </div>
+
+      <!-- Markaz: Yo'nalishni almashtirish (1995 ⇄ 2026) -->
+      <div class="direction-control">
+        <span class="direction-label" id="sourceLabel">Lotin (1995-yil)</span>
+        <button class="swap-direction-btn" id="swapBtn" title="Yo'nalishni almashtirish (1995 ⇄ 2026)" type="button">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 3 4 4-4 4"/>
+            <path d="M20 7H4"/>
+            <path d="m8 21-4-4 4-4"/>
+            <path d="M4 17h16"/>
+          </svg>
+        </button>
+        <span class="direction-label direction-target" id="targetLabel">Yangi tahrir (2026-yil)</span>
+      </div>
+
+      <!-- O'ng: Tushunarli ma'lumot tugmasi (O'RQ-1184 va Jonli rejim o'rniga) -->
+      <div class="header-actions">
+        <button type="button" class="info-badge-btn" id="infoBtn" title="Yangi alifbo qoidalari va qonun haqida ma'lumot">
+          <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+          </svg>
+          <span>2026-yilgi yangi alifbo</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Asosiy ishchi hudud -->
+  <main class="main-container">
+
+    <!-- Ikkita asosiy panel (Input va Output) -->
+    <div class="converter-grid">
+      
+      <!-- Chap panel: Kiritish -->
+      <section class="panel-card input-card">
+        <div class="card-header">
+          <div class="card-header-left">
+            <h2 class="card-title" id="inputCardTitle">Asl matn</h2>
+            <span class="card-tag" id="inputCardTag">1995</span>
+          </div>
+          <div class="card-header-right">
+            <span class="counter-text" id="charCounter">0 belgi</span>
+            <span class="counter-divider">•</span>
+            <span class="counter-text" id="wordCounter">0 so'z</span>
+          </div>
+        </div>
+
+        <div class="textarea-wrapper">
+          <textarea 
+            id="sourceText" 
+            class="text-editor" 
+            placeholder="Matnni bu yerga kiriting yoki nusxasini joylashtiring..."
+            aria-labelledby="inputCardTitle"
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="card-footer">
+          <div class="footer-actions-left">
+            <button type="button" class="btn btn-outline" id="pasteBtn" title="Xotiradan (clipboard) matnni joylashtirish">
+              <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+              </svg>
+              Joylashtirish
+            </button>
+            <button type="button" class="btn btn-outline" id="sampleBtn" title="Namuna matnni yuklash">
+              <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+              Namuna matn
+            </button>
+            <button type="button" class="btn btn-ghost" id="clearBtn" title="Matnni tozalash" disabled>
+              <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18"/>
+                <path d="m6 6 12 12"/>
+              </svg>
+              Tozalash
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mobil ekranlar uchun panellararo almashtirish tugmasi -->
+      <div class="mobile-swap-divider">
+        <button type="button" class="mobile-swap-btn" id="mobileSwapBtn" title="Yo'nalishni almashtirish">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m7 15 5 5 5-5"/>
+            <path d="M12 4v16"/>
+            <path d="m17 9-5-5-5 5"/>
+          </svg>
+          <span id="mobileSwapText">1995 ⇄ 2026</span>
+        </button>
+      </div>
+
+      <!-- O'ng panel: Natija -->
+      <section class="panel-card output-card">
+        <div class="card-header">
+          <div class="card-header-left">
+            <h2 class="card-title" id="outputCardTitle">Yangi yozuvdagi natija</h2>
+            <span class="card-tag tag-primary" id="outputCardTag">2026</span>
+          </div>
+          <div class="card-header-right">
+            <span class="counter-text" id="targetCharCounter">0 belgi</span>
+            <span class="counter-divider">•</span>
+            <span class="counter-text" id="targetWordCounter">0 so'z</span>
+          </div>
+        </div>
+
+        <div class="textarea-wrapper">
+          <textarea 
+            id="targetText" 
+            class="text-editor text-result" 
+            placeholder="Konvertatsiya qilingan natija shu yerda avtomatik paydo bo'ladi..."
+            aria-labelledby="outputCardTitle"
+            readonly
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="card-footer">
+          <div class="footer-actions-right">
+            <button type="button" class="btn btn-primary" id="copyBtn" title="Natijani nusxalash" disabled>
+              <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+              </svg>
+              <span>Nusxalash</span>
+            </button>
+            <button type="button" class="btn btn-outline" id="saveBtn" title="Natijani .txt fayl qilib yuklab olish" disabled>
+              <svg aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+              Saqlash (.txt)
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <p class="status-message" id="statusMessage" role="status" aria-live="polite"></p>
+
+    <!-- Eslatma va yangi harflar jadvali -->
+    <section class="reference-section">
+      <div class="reference-title">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        Asosiy harf o'zgarishlari eslatmasi
+      </div>
+      <div class="rules-grid">
+        <div class="rule-card">
+          <div class="rule-from">Oʻ oʻ</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">Ö ö</div>
+          <div class="rule-example">oʻzbek ➔ <b>özbek</b></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-from">Gʻ gʻ</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">Ğ ğ</div>
+          <div class="rule-example">gʻalaba ➔ <b>ğalaba</b></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-from">Sh sh</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">Ş ş</div>
+          <div class="rule-example">shahar ➔ <b>şahar</b></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-from">Ch ch</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">Ç ç</div>
+          <div class="rule-example">choy ➔ <b>çoy</b></div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-from">ʼ (tutuq)</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">ʼ (saqlanadi)</div>
+          <div class="rule-example">sanʼat ➔ <b>sanʼat</b></div>
+        </div>
+        <div class="rule-card rule-card-info">
+          <div class="rule-from">Ng ng</div>
+          <div class="rule-arrow">➔</div>
+          <div class="rule-to">ng (oddiy)</div>
+          <div class="rule-example">alohida harf emas</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Qonun va yangi alifbo haqida qisqa ma'lumot modali -->
+  <div class="modal-backdrop" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon">
+            <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+              <path d="M8 7h8"/>
+              <path d="M8 11h8"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-title" id="infoModalTitle">Yangi Alifbo Qonuni Haqida</h3>
+            <span class="modal-subtitle">2026-yil 21-oktabr rasmiy tahriri</span>
+          </div>
+        </div>
+        <button type="button" class="modal-close-btn" id="modalCloseBtn" title="Yopish">
+          <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"/>
+            <path d="m6 6 12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="info-block">
+          <h4>Qanday o'zgarishlar kiritildi?</h4>
+          <p>Qo'sh harflar va apostrofli murakkab belgilar o'rniga turkiy tillar bilan uyg'un 4 ta yangi harf qabul qilindi: <b>Ö ö</b>, <b>Ğ ğ</b>, <b>Ş ş</b>, <b>Ç ç</b>. Alifbo jami 28 ta harf va 1 ta tutuq belgisidan iborat.</p>
+        </div>
+        <div class="info-block">
+          <h4>Qachondan to'liq kuchga kiradi?</h4>
+          <p>Qonun rasmiy e'lon qilinganidan 6 oy o'tgach — <b>2027-yil 22-apreldan</b> to'liq yuridik kuchga kiradi.</p>
+        </div>
+        <div class="info-block">
+          <h4>Mavjud hujjatlar va pullar nima bo'ladi?</h4>
+          <p>Eski alifboda yozilgan pasport, diplom, guvohnomalar va milliy valyuta o'z kuchini yo'qotmaydi, ularni majburiy almashtirish talab etilmaydi.</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="modalOkBtn">Tushundim</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pastki qism (Footer) -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>© 2026 Yangi O'zbek Yozuvi Konvertori • Tezkor, xavfsiz va bepul</p>
+    </div>
+  </footer>
+
+  <script src="converter.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+
