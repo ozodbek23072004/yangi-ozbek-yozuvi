@@ -98,8 +98,34 @@ const COPY_BTN_SUCCESS_HTML = `
   <span>Nusxalandi!</span>`;
 
 // =========================================================================
-// 2. Asosiy funksiyalar
+// 2. Asosiy funksiyalar va Analitika
 // =========================================================================
+
+let trackConvertTimer = null;
+
+/** Google Analytics 4 hodisalarini xavfsiz jo'natish */
+function trackEvent(eventName, params = {}) {
+  try {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, params);
+    }
+  } catch (err) {
+    // Analitika xatosi konvertor ishlashiga aslo xalaqit bermasligi kerak
+  }
+}
+
+/** Matn kiritib bo'lingach GA4 ga konvertatsiya hodisasini yuborish (debounced) */
+function scheduleTrackConvert() {
+  if (trackConvertTimer) window.clearTimeout(trackConvertTimer);
+  trackConvertTimer = window.setTimeout(() => {
+    if (sourceText.value.trim().length > 0) {
+      trackEvent('convert_action', {
+        char_count: sourceText.value.length,
+        direction: direction
+      });
+    }
+  }, 1500);
+}
 
 /** Matnni konvertatsiya qiladi va natijani yangilaydi */
 function runConversion() {
@@ -113,6 +139,7 @@ function runConversion() {
 
   updateCounters(input, result);
   updateButtonStates();
+  scheduleTrackConvert();
 }
 
 /** Kirish hodisalarini birlashtiradi (katta matnda ortiqcha ish bo'lmasligi uchun) */
@@ -261,6 +288,7 @@ function handleSwap() {
   sourceText.value = currentResult;
   runConversion();
   focusSourceAtStart();
+  trackEvent('swap_direction', { new_direction: direction });
 
   swapBtn.classList.toggle('is-reversed');
   swapBtn.classList.remove('is-swapping');
@@ -285,6 +313,7 @@ clearBtn.addEventListener('click', () => {
   updateButtonStates();
   resetCopyBtn();
   focusSourceAtStart();
+  trackEvent('clear_text');
 });
 
 /** 📋 Joylashtirish (Paste) tugmasi */
@@ -302,6 +331,7 @@ pasteBtn.addEventListener('click', async () => {
         sourceText.value = clipboardText;
         runConversion();
         focusSourceAtStart();
+        trackEvent('paste_text', { char_count: clipboardText.length });
         if (isTruncated) {
           showStatus(`Maksimal hajm — ${formatNumber(MAX_CHARS)} belgi! Ortiqcha qismi qisqartirildi.`, true);
         } else {
@@ -325,6 +355,7 @@ sampleBtn.addEventListener('click', () => {
   runConversion();
   resetCopyBtn();
   focusSourceAtStart();
+  trackEvent('sample_loaded', { direction: direction });
 });
 
 /** 📋 Nusxa olish tugmasi (xavfsiz va ishonchli) */
@@ -337,6 +368,7 @@ copyBtn.addEventListener('click', () => {
     copyBtn.innerHTML = COPY_BTN_SUCCESS_HTML;
     copyBtn.classList.add('btn-success');
     showStatus('Natija nusxalandi.');
+    trackEvent('copy_text', { char_count: result.length, direction: direction });
 
     copyTimeout = window.setTimeout(() => {
       resetCopyBtn();
@@ -390,6 +422,7 @@ saveBtn.addEventListener('click', () => {
   a.click();
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   showStatus('Fayl yuklab olindi.');
+  trackEvent('download_txt', { char_count: result.length, direction: direction });
 });
 
 // =========================================================================
@@ -402,6 +435,7 @@ function openModal() {
   infoModal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   if (modalOkBtn) modalOkBtn.focus();
+  trackEvent('info_modal_open');
 }
 
 function closeModal() {
